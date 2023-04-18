@@ -75,8 +75,8 @@ class UALDataset(torch.utils.data.Dataset):
 
         if model_type == 'smp':
             img = img / 255.
-            img = torch.tensor(img, dtype=torch.float)
-            img = self.transform(img).permute(2, 0, 1)
+            img = torch.tensor(img, dtype=torch.float).permute(2, 0, 1)
+            img = self.transform(img)
         else:
             raise ValueError('Not implemented model type preprocess fn')
 
