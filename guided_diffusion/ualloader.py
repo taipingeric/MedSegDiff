@@ -57,14 +57,17 @@ class UALDataset(torch.utils.data.Dataset):
 
     def _init_img_preprocess_fn(self, config):
         model_type = config['model']['name']
-        if model_type == 'smp':
-            raise AssertionError('Not implemented model type preprocess fn')
-            # encoder_name = config['model'][model_type]['encoder_name']
-            # transform = get_preprocessing_fn(encoder_name, pretrained='imagenet')
-        else:
-            transform = T.Compose([
-                T.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
-            ])
+        transform = T.Compose([
+            T.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
+        ])
+        # if model_type == 'smp':
+        #     raise AssertionError('Not implemented model type preprocess fn')
+        #     # encoder_name = config['model'][model_type]['encoder_name']
+        #     # transform = get_preprocessing_fn(encoder_name, pretrained='imagenet')
+        # else:
+        #     transform = T.Compose([
+        #         T.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
+        #     ])
         self.transform = transform
 
     def _to_torch_tensor(self, img, mask):
