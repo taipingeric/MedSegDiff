@@ -1,0 +1,142 @@
+# Lab PC
+# data_dir: "../../../Documents/SmartSurgery/UAL_2500"
+# model_dir: "../../../Documents/ckpt/UAL"
+# config_dir: "../../../Documents/ckpt/UAL_config"
+# AIA Hub
+
+num_cls: 15
+# num_cls: 5
+df_train: "./train.csv"
+df_val: "./val.csv"
+df_test: "./test.csv"
+img_h: 480
+img_w: 640
+
+# model
+save_iter: 10
+last: '-last.pth'
+best: '-best.pth'
+
+model:
+  name: 'smp' # UNet, UNet3plus, U2Net, SegFormer, UNet2plus, AttUNet, smp
+  UNet:
+    encoder: 'basic' # cspdarknet53 , cspresnet50, basic, UNet2plusEncoder
+    init_dim: 32  # 32
+    block: 'basic' #'csp' # 'basic'
+    stages: 5
+    decoder: 'UNet2plusDecoder' # basic, transformer, UNet2plusDecoder
+    head: 'basic' # basic, identity
+  UNet3plus:
+    init_dim: 32
+  U2Net:
+    init_dim: 32
+  smp:
+    encoder_name: tu-tf_efficientnet_b4_ns
+    freeze_encoder: False
+    seg_name: UnetPlusPlus
+    seg_encoder_weights: True
+  norm: 'bn' # bn, in, ln
+
+encoder:
+  pretrained: True
+  freeze: False
+  basic:
+  CSPDarkNet:
+
+decoder:
+  transformer:
+    patch_size: 16 # 32
+    out_dim: 256 # 512
+    depth: 1 # 6
+    heads: 4 # 16
+    dim_head: 32 # 64
+    mlp_dim: 512 # 2048
+
+head:
+  k_size: 1
+
+path:
+  cbam: False
+
+# train
+epochs: 100
+bs: 3 # Unet=3, Unet3+=1, U2Net=2, SegFormer: 8, UNet2+: 3, transfoer decoder: 2, AttUNet: ?
+aug: True # False
+loss: 'dice+ce' #ce dice dice+ce
+# optimizer
+optm_type: ranger21 # ranger21, adam, sgd
+ranger21:
+  lr: 0.001 # learning rate
+  momentum: 1e-9
+use_cls_weight: True
+cls_weight:
+# ^3
+- 0.7998484195
+- 1.914440605
+- 1.032683995
+- 0.7928838825
+- 0.9618873277
+- 0.9504603406
+- 0.9699307191
+- 0.826442537
+- 1.560860936
+- 0.8569658445
+- 0.8727923366
+- 0.9800295588
+- 0.8132562501
+- 1.677382726
+- 0.8380489666
+# ^2
+# - 0.8616650158
+# - 1.541799609
+# - 1.021672328
+# - 0.8566558662
+# - 0.9744273582
+# - 0.9666946906
+# - 0.9798519837
+# - 0.8806603458
+# - 1.345579848
+# - 0.9022128505
+# - 0.9132870149
+# - 0.9866416614
+# - 0.8712676849
+# - 1.411740186
+# - 0.8888864036
+# (1/NUM_CLS) / (B2 / SUM)
+# - 0.9282591318
+# - 1.241692236
+# - 1.010778081
+# - 0.9255570572
+# - 0.9871308719
+# - 0.9832063317
+# - 0.9898747313
+# - 0.9384350515
+# - 1.159991314
+# - 0.9498488566
+# - 0.9556605124
+# - 0.9932983748
+# - 0.9334172084
+# - 1.188166733
+# - 0.9428077235
+# formula from tutorial
+#- 0.303554603
+#- 7.53925499
+#- 0.843198324
+#- 8.72679773
+#- 4.95967394
+#- 3.60782685
+#- 2.27420596
+#- 0.217275527
+#- 832.700146
+#- 20.3423517
+#- 1.02446777
+#- 4.40293647
+#- 0.321250680
+#- 15.9894279
+#- 3.10008595
+
+# wandb
+project: "smartsurgury"
+entity: "fusiontech"
+
+verbose: True
