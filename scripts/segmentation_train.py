@@ -7,6 +7,7 @@ from guided_diffusion import dist_util, logger
 from guided_diffusion.resample import create_named_schedule_sampler
 from guided_diffusion.bratsloader import BRATSDataset, BRATSDataset3D
 from guided_diffusion.isicloader import ISICDataset
+from guided_diffusion.ualloader import UALDataset
 from guided_diffusion.script_util import (
     model_and_diffusion_defaults,
     create_model_and_diffusion,
@@ -39,6 +40,15 @@ def main():
 
         ds = BRATSDataset3D(args.data_dir, transform_train, test_flag=False)
         args.in_ch = 5
+    elif args.data_name == 'UAL':
+        import yaml
+        with open(config_path, 'r') as f:
+            config = yaml.load(f, Loader=yaml.FullLoader)
+        ds = UALDataset("./train.csv", config, aug=True)
+        args.in_ch = 3
+    else:
+        raise NotImplementedError
+    
     datal= th.utils.data.DataLoader(
         ds,
         batch_size=args.batch_size,
@@ -99,6 +109,7 @@ def create_argparser():
         gpu_dev = "0",
         multi_gpu = None, #"0,1,2"
         out_dir='./results/'
+        config_path = './config.yaml'
     )
     defaults.update(model_and_diffusion_defaults())
     parser = argparse.ArgumentParser()
