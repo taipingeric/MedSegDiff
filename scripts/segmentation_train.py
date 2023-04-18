@@ -44,6 +44,7 @@ def main():
         import yaml
         with open(args.config_path, 'r') as f:
             config = yaml.load(f, Loader=yaml.FullLoader)
+            print(config)
         ds = UALDataset("./train.csv", config, aug=True)
         args.in_ch = 3
     else:
