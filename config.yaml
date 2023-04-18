@@ -6,6 +6,7 @@
 
 num_cls: 15
 # num_cls: 5
+data_dir: "../UAL_2500"
 df_train: "./train.csv"
 df_val: "./val.csv"
 df_test: "./test.csv"
