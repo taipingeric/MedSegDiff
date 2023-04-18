@@ -42,7 +42,7 @@ def main():
         args.in_ch = 5
     elif args.data_name == 'UAL':
         import yaml
-        with open(config_path, 'r') as f:
+        with open(args.config_path, 'r') as f:
             config = yaml.load(f, Loader=yaml.FullLoader)
         ds = UALDataset("./train.csv", config, aug=True)
         args.in_ch = 3
