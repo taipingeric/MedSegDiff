@@ -14,6 +14,7 @@ from guided_diffusion.script_util import (
     args_to_dict,
     add_dict_to_argparser,
 )
+import os
 import torch as th
 from guided_diffusion.train_util import TrainLoop
 from visdom import Visdom
@@ -45,7 +46,7 @@ def main():
         with open(args.config_path, 'r') as f:
             config = yaml.load(f, Loader=yaml.FullLoader)
             print(config)
-        ds = UALDataset("./train.csv", config, aug=True)
+        ds = UALDataset(os.path.join(args.csv_dir, "train.csv"), config, aug=True)
         args.in_ch = 3
     else:
         raise NotImplementedError
@@ -110,7 +111,8 @@ def create_argparser():
         gpu_dev = "0",
         multi_gpu = None, #"0,1,2"
         out_dir='./results/',
-        config_path = './config.yaml'
+        config_path = './config.yaml',
+        csv_dir =  './data/ual',
     )
     defaults.update(model_and_diffusion_defaults())
     parser = argparse.ArgumentParser()
