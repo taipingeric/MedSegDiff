@@ -177,6 +177,7 @@ class TrainLoop:
 
             try:
                     batch, cond = next(data_iter)
+                    print("batch cond shape", batch.shape, cond.shape)
             except StopIteration:
                     # StopIteration is thrown if dataset ends
                     # reinitialize data loader
